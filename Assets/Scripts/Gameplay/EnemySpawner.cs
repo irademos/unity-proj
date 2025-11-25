@@ -49,31 +49,45 @@ public class EnemySpawner : MonoBehaviour
     {
         var terrain = Terrain.activeTerrain;
 
-        Vector2 circle = Random.insideUnitCircle * spawnRadius;
-        Vector3 center = transform.position;
-        Vector3 pos = center + new Vector3(circle.x, 0f, circle.y);
-
+        // If we have a Terrain, use its true world bounds
         if (terrain != null)
         {
             Vector3 tPos = terrain.transform.position;
             Vector3 tSize = terrain.terrainData.size;
 
-            pos.x = Mathf.Clamp(pos.x, tPos.x, tPos.x + tSize.x);
-            pos.z = Mathf.Clamp(pos.z, tPos.z, tPos.z + tSize.z);
+            // Random X/Z inside terrain rectangle
+            float x = Random.Range(tPos.x, tPos.x + tSize.x);
+            float z = Random.Range(tPos.z, tPos.z + tSize.z);
 
-            float h = terrain.SampleHeight(pos) + tPos.y;
-            pos.y = h;
+            // Start ray above max height
+            Vector3 rayStart = new Vector3(x, tPos.y + tSize.y + 50f, z);
+
+            if (Physics.Raycast(rayStart, Vector3.down, out var hit, tSize.y + 100f))
+            {
+                return hit.point;  // exact surface (terrain collider or anything on top)
+            }
+
+            // Fallback: sample height from terrain data
+            float h = terrain.SampleHeight(new Vector3(x, 0f, z)) + tPos.y;
+            return new Vector3(x, h, z);
         }
         else
         {
-            // fallback: raycast from above
-            Vector3 rayStart = pos + Vector3.up * 50f;
-            if (Physics.Raycast(rayStart, Vector3.down, out var hit, 200f))
-                pos = hit.point;
-        }
+            // No Terrain in scene: random around spawner + raycast down
+            Vector2 circle = Random.insideUnitCircle * spawnRadius;
+            Vector3 pos = transform.position + new Vector3(circle.x, 50f, circle.y);
 
-        return pos;
+            if (Physics.Raycast(pos, Vector3.down, out var hit, 200f))
+            {
+                return hit.point;
+            }
+
+            // If still nothing, just drop them at spawner height
+            pos.y = transform.position.y;
+            return pos;
+        }
     }
+
 
 
     private void ConvertToEnemy(GameObject enemy)
