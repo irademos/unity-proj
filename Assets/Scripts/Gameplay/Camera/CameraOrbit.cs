@@ -86,9 +86,9 @@ public class CameraOrbitNewInput : MonoBehaviour
             return;
         }
 
-        GameObject p = GameObject.FindWithTag("Player");
-        if (p != null)
-            target = p.transform;
+        // GameObject p = GameObject.FindWithTag("Player");
+        // if (p != null)
+        //     target = p.transform;
     }
 
     private void LockCursor()

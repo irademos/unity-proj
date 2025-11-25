@@ -232,6 +232,103 @@ MonoBehaviour:
   zoomSpeed: 2
   minVerticalAngle: -20
   maxVerticalAngle: 60
+--- !u!1 &506971041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 506971044}
+  - component: {fileID: 506971043}
+  - component: {fileID: 506971042}
+  m_Layer: 0
+  m_Name: EnvironmentController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &506971042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506971041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73da85e95d70a0a48abc5615f1851add, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeatherManager
+  clearProfile:
+    skybox: {fileID: 2100000, guid: e2341a9d03e86ec4290c72b1e22bbc7c, type: 2}
+    fogDensity: 0.002
+    ambientLight: {r: 0.8679245, g: 0.8106546, b: 0.7000712, a: 1}
+  cloudyProfile:
+    skybox: {fileID: 2100000, guid: 8dd2f17b6e3f8174390967bc55ead836, type: 2}
+    fogDensity: 0.01
+    ambientLight: {r: 1, g: 1, b: 1, a: 1}
+  rainProfile:
+    skybox: {fileID: 2100000, guid: 8426cf3d3939a7d419671f3d5c269c0b, type: 2}
+    fogDensity: 0.01
+    ambientLight: {r: 1, g: 1, b: 1, a: 1}
+  stormProfile:
+    skybox: {fileID: 2100000, guid: 8426cf3d3939a7d419671f3d5c269c0b, type: 2}
+    fogDensity: 0.01
+    ambientLight: {r: 1, g: 1, b: 1, a: 1}
+  rainFX: {fileID: 0}
+  stormFX: {fileID: 0}
+  lightningFlash: {fileID: 0}
+  lightningChancePerMinute: 4
+--- !u!114 &506971043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506971041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22fd21cf86b914d4db4528c557cede85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DayNightCycle
+  dayLengthMinutes: 15
+  timeOfDay: 0.217
+  sun: {fileID: 1964256282}
+  moon: {fileID: 1007755828}
+  sunIntensity:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  moonIntensity:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  daySkybox: {fileID: 2100000, guid: e2341a9d03e86ec4290c72b1e22bbc7c, type: 2}
+  nightSkybox: {fileID: 2100000, guid: 6eecb3bb77b3f7a43a504fceda3b0b5f, type: 2}
+  nightStart: 0.75
+  dayStart: 0.25
+--- !u!4 &506971044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506971041}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 293.78238, y: 5.26677, z: 251.29564}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &513186170
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,6 +340,7 @@ GameObject:
   - component: {fileID: 513186171}
   - component: {fileID: 513186173}
   - component: {fileID: 513186172}
+  - component: {fileID: 513186174}
   m_Layer: 0
   m_Name: GameSystems
   m_TagString: Untagged
@@ -277,7 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26bc9a33bb4e7ce449b6ffb51d05e319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameBootstrap
-  playerPrefab: {fileID: -8928049002154721415, guid: f855016c701a3634daa1d2113cff33bc, type: 3}
+  playerPrefab: {fileID: 1170172686979684846, guid: c1c1574a251d53f45b2631a797e39e90, type: 3}
   playerSpawnPoint: {fileID: 857851240}
 --- !u!114 &513186173
 MonoBehaviour:
@@ -291,6 +389,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3b2cdf754eb7694a9c8498e3edc3eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+--- !u!114 &513186174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513186170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa46522104b5c9049aa4d93d8664b714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  playerCharacterPrefab: {fileID: 8788053714655287506, guid: a5744e8331715af4bb5abea927fa3eeb, type: 3}
+  enemiesToSpawn: 4
+  spawnPoints: []
+  useRandomSpawn: 1
+  spawnRadius: 20
+  minDistanceFromPlayer: 5
 --- !u!1 &857851239
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,6 +438,103 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1007755827
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1007755829}
+  - component: {fileID: 1007755828}
+  m_Layer: 0
+  m_Name: Moon Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!108 &1007755828
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007755827}
+  m_Enabled: 1
+  serializedVersion: 11
+  m_Type: 1
+  m_Color: {r: 0.49480954, g: 0.49061057, b: 0.7075472, a: 1}
+  m_Intensity: 0.2
+  m_Range: 10
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 2
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
+--- !u!4 &1007755829
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007755827}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &1272469851
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,6 +545,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1272469854}
   - component: {fileID: 1272469853}
+  - component: {fileID: 1272469855}
   - component: {fileID: 1272469852}
   m_Layer: 0
   m_Name: Ground
@@ -415,6 +629,40 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1272469855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272469851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd01eada74025584ea6fb59bf0546c31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeightBasedTerrainPainter
+  layers:
+  - terrainLayer: {fileID: 8574412962073106934, guid: bd1fcb10d2c5b5d4ba6e01a34e4735be, type: 2}
+    minHeight: 0
+    maxHeight: 20
+    feather: 5
+  - terrainLayer: {fileID: 8574412962073106934, guid: 091511b8c4f042c4082a4d5af73e92c7, type: 2}
+    minHeight: 15
+    maxHeight: 30
+    feather: 6
+  - terrainLayer: {fileID: 8574412962073106934, guid: a579e897aa6ba004ab0e04fa3053263a, type: 2}
+    minHeight: 25
+    maxHeight: 40
+    feather: 7
+  - terrainLayer: {fileID: 8574412962073106934, guid: c997c17aa360cb749a27932fe3bdfcce, type: 2}
+    minHeight: 35
+    maxHeight: 50
+    feather: 8
+  - terrainLayer: {fileID: 8574412962073106934, guid: 59b98ca43f27d8c4a89d4058d2a962e5, type: 2}
+    minHeight: 45
+    maxHeight: 70
+    feather: 8
+  autoApplyInEditor: 1
 --- !u!1 &1964256281
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,6 +766,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 123388151}
   - {fileID: 1964256283}
+  - {fileID: 1007755829}
   - {fileID: 513186171}
   - {fileID: 857851240}
   - {fileID: 1272469854}
+  - {fileID: 506971044}

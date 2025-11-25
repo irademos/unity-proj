@@ -9,12 +9,14 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private Vector3 velocity;
     private Animator animator;
+    private CharacterMotor motor;
     private Vector3 _lastPosition;
 
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>(); // or GetComponent<Animator>() if Animator is on same object
+        motor = GetComponent<CharacterMotor>();
 
         if (config == null)
         {
@@ -27,10 +29,8 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleMovement();
-        HandleJumpAndGravity();
+        HandleJumpInput();
         UpdateAnimation();
-
-        Debug.Log("Grounded: " + controller.isGrounded + "  Y=" + transform.position.y);
     }
 
 
@@ -75,36 +75,15 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
     }
 
-    private void HandleJumpAndGravity()
+    private void HandleJumpInput()
     {
-        bool isGrounded = controller.isGrounded;
-
-        // Always ignore any horizontal velocity that might leak in
-        velocity.x = 0f;
-        velocity.z = 0f;
-
-        // Snap to ground when grounded
-        if (isGrounded && velocity.y < 0f)
+        if (Input.GetButtonDown("Jump"))
         {
-            velocity.y = -2f; // small downward pull keeps CC grounded
-        }
-
-        // Jump
-        if (isGrounded && Input.GetButtonDown("Jump"))
-        {
-            velocity.y = Mathf.Sqrt(config.jumpForce * -2f * config.gravity);
-
+            motor.Jump(config.jumpForce);
             if (animator != null)
                 animator.SetTrigger("Jump");
         }
-
-        // Apply gravity
-        velocity.y += config.gravity * Time.deltaTime;
-
-        // Only vertical movement from gravity & jump
-        controller.Move(velocity * Time.deltaTime);
     }
-
 
     private void UpdateAnimation()
     {
