@@ -12,8 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repo (with LFS)
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -22,11 +24,59 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Sync WebBuild to S3
+      # 1) Upload everything EXCEPT .gz files
+      - name: Sync non-gz assets to S3
         run: |
           aws s3 sync WebBuild s3://${{ secrets.S3_BUCKET }}/Builds \
             --delete \
-            --cache-control "public, max-age=31536000"
+            --cache-control "public, max-age=31536000" \
+            --exclude "*.gz"
+
+      # 2) Upload .gz files with correct Content-Encoding and Content-Type
+      - name: Upload gzipped assets with proper metadata
+        run: |
+          find WebBuild -name "*.gz" -print0 | while IFS= read -r -d '' file; do
+            # S3 key relative to WebBuild/
+            key="${file#WebBuild/}"
+
+            # Strip .gz to inspect original extension
+            base_no_gz="${key%.gz}"
+            ext="${base_no_gz##*.}"
+
+            # Map extension to Content-Type
+            case "$ext" in
+              js)
+                content_type="application/javascript"
+                ;;
+              wasm)
+                content_type="application/wasm"
+                ;;
+              data)
+                content_type="application/octet-stream"
+                ;;
+              json)
+                content_type="application/json"
+                ;;
+              html)
+                content_type="text/html"
+                ;;
+              txt)
+                content_type="text/plain"
+                ;;
+              *)
+                content_type="application/octet-stream"
+                ;;
+            esac
+
+            echo "Uploading $file as s3://${{ secrets.S3_BUCKET }}/Builds/$key"
+            echo "  Content-Type: $content_type"
+            echo "  Content-Encoding: gzip"
+
+            aws s3 cp "$file" "s3://${{ secrets.S3_BUCKET }}/Builds/$key" \
+              --content-encoding "gzip" \
+              --content-type "$content_type" \
+              --cache-control "public, max-age=31536000"
+          done
 
       - name: Create CloudFront invalidation
         run: |
