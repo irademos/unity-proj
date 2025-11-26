@@ -1,16 +1,17 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterMotor))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerConfig config;
-    [SerializeField] private float rotationSpeed = 10f; 
+    [SerializeField] private float rotationSpeed = 10f;
 
     private CharacterController controller;
-    private Vector3 velocity;
     private Animator animator;
     private CharacterMotor motor;
     private Vector3 _lastPosition;
+    private Vector3 _lastMoveDirection = Vector3.forward;
 
     private void Awake()
     {
@@ -23,6 +24,10 @@ public class PlayerController : MonoBehaviour
             Debug.LogWarning("PlayerController: PlayerConfig not assigned. Using defaults.");
             config = ScriptableObject.CreateInstance<PlayerConfig>();
         }
+        if (motor != null)
+        {
+            motor.gravity = config.gravity;
+        }
         _lastPosition = transform.position;
     }
 
@@ -30,12 +35,9 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         HandleJumpInput();
+        HandleActions();
         UpdateAnimation();
     }
-
-
-    private Vector3 lastMove; // store move vector for anim
-
     private void HandleMovement()
     {
         // Old or new input, keep whatever you're using:
@@ -45,12 +47,6 @@ public class PlayerController : MonoBehaviour
         Vector2 input = new Vector2(h, v);
         if (input.sqrMagnitude > 1f)
             input.Normalize();
-
-        // If no input, no movement or rotation
-        if (input.sqrMagnitude < 0.0001f)
-        {
-            return;
-        }
 
         // Camera-relative movement
         Transform cam = Camera.main.transform;
@@ -66,13 +62,24 @@ public class PlayerController : MonoBehaviour
         moveDir.Normalize();
         moveDir.y = 0f;
 
-        // Move
-        Vector3 move = moveDir * config.moveSpeed;
-        controller.Move(move * Time.deltaTime);
+        if (moveDir.sqrMagnitude > 0.0001f)
+            _lastMoveDirection = moveDir;
+
+        Vector3 desiredVelocity = moveDir * config.moveSpeed;
+        if (motor != null)
+            motor.Move(desiredVelocity);
+        else
+            controller.Move(desiredVelocity * Time.deltaTime);
 
         // Rotate character toward movement direction
-        Quaternion targetRot = Quaternion.LookRotation(moveDir, Vector3.up);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+        if (motor == null || motor.CanMove)
+        {
+            if (moveDir.sqrMagnitude > 0.0001f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(moveDir, Vector3.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+            }
+        }
     }
 
     private void HandleJumpInput()
@@ -82,6 +89,23 @@ public class PlayerController : MonoBehaviour
             motor.Jump(config.jumpForce);
             if (animator != null)
                 animator.SetTrigger("Jump");
+        }
+    }
+
+    private void HandleActions()
+    {
+        if (motor == null) return;
+
+        // Punch mapped to default "Fire1" (Left Mouse / Ctrl)
+        if (Input.GetButtonDown("Fire1"))
+        {
+            motor.TryPunch();
+        }
+
+        // Roll mapped to default "Fire3" (Left Shift)
+        if (Input.GetButtonDown("Fire3"))
+        {
+            motor.TryRoll(_lastMoveDirection);
         }
     }
 
