@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Roll mapped to default "Fire3" (Left Shift)
-        if (Input.GetButtonDown("Fire3"))
+        if (Input.GetButtonDown("Fire2"))
         {
             motor.TryRoll(_lastMoveDirection);
         }
@@ -118,8 +118,7 @@ public class PlayerController : MonoBehaviour
         // Ignore vertical for walking speed
         delta.y = 0f;
         float speed = delta.magnitude / Mathf.Max(Time.deltaTime, 0.0001f);
-
-        animator.SetFloat("Speed", speed);
+        Debug.Log(speed);
 
         _lastPosition = transform.position;
     }
