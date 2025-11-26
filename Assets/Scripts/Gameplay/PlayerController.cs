@@ -118,7 +118,13 @@ public class PlayerController : MonoBehaviour
         // Ignore vertical for walking speed
         delta.y = 0f;
         float speed = delta.magnitude / Mathf.Max(Time.deltaTime, 0.0001f);
-        Debug.Log(speed);
+
+        // Normalize by configured move speed so animator thresholds at 0.1/0.8 work as intended
+        float normalizedSpeed = speed;
+        if (config != null && config.moveSpeed > 0f)
+            normalizedSpeed = Mathf.Clamp01(speed / config.moveSpeed);
+
+        animator.SetFloat("Speed", normalizedSpeed);
 
         _lastPosition = transform.position;
     }
