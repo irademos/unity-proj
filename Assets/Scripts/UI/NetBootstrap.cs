@@ -11,6 +11,12 @@ public class NetBootstrap : MonoBehaviour
     {
         networkManager.ServerManager.StartConnection();
         networkManager.ClientManager.StartConnection();
+        Debug.Log("StartHost clicked");
+        Debug.Log($"NM present: {networkManager != null}");
+        Debug.Log($"Server started? {networkManager.ServerManager.Started}");
+        Debug.Log($"Client started? {networkManager.ClientManager.Started}");
+
+        FindAnyObjectByType<GpsBridge>().StartGps();
         SceneManager.LoadScene(gameSceneName);
     }
 

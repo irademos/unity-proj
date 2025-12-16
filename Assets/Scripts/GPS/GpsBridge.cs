@@ -45,4 +45,12 @@ public class GpsBridge : MonoBehaviour
         LastError = msg;
         Debug.LogWarning($"GPS error: {msg}");
     }
+
+    public void StartGps()
+    {
+    #if UNITY_WEBGL && !UNITY_EDITOR
+        StartBrowserLocationWatch();
+    #endif
+    }
+
 }
