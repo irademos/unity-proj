@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 _lastPosition;
     private Vector3 _lastMoveDirection = Vector3.forward;
 
+    void Start() => Debug.Log("Player instance exists: " + name);
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();

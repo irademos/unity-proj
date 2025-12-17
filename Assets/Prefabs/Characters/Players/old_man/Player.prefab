@@ -82,6 +82,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cc4b5b67e67328b428616e9e5094faa0, type: 3}
       insertIndex: -1
       addedObject: {fileID: -7954330712534517812}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cc4b5b67e67328b428616e9e5094faa0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6623269021154059443}
   m_SourcePrefab: {fileID: 100100000, guid: cc4b5b67e67328b428616e9e5094faa0, type: 3}
 --- !u!1 &36867594020856186 stripped
 GameObject:
@@ -278,3 +281,18 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 3937204476913755033}
   _networkObjectCache: {fileID: 0}
   useGpsToDrivePosition: 0
+--- !u!114 &6623269021154059443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36867594020856186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8e14868570bb4540a6575deb15558e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalPlayerCameraBinder
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 3937204476913755033}
+  _networkObjectCache: {fileID: 0}
