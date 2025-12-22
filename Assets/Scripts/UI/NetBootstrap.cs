@@ -9,18 +9,17 @@ public class NetBootstrap : MonoBehaviour
 
     public void StartHost()
     {
-        Debug.Log("StartHost clicked");
+        Debug.Log("Connect clicked");
 
         if (networkManager == null)
         {
-            Debug.LogError("NetworkManager not assigned!");
+            Debug.LogError("NetworkManager not assigned");
             return;
         }
 
-        networkManager.ServerManager.StartConnection();
+        // WebGL should be client-only
         networkManager.ClientManager.StartConnection();
 
-        Debug.Log($"Server started? {networkManager.ServerManager.Started}");
         Debug.Log($"Client started? {networkManager.ClientManager.Started}");
 
         var gps = FindAnyObjectByType<GpsBridge>();
@@ -28,6 +27,7 @@ public class NetBootstrap : MonoBehaviour
 
         SceneManager.LoadScene(gameSceneName);
     }
+
 
     public void StartClient()
     {
